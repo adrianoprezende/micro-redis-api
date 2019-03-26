@@ -172,6 +172,18 @@ public class CacheServiceTests {
 	}
 	
 	@Test
+	public void shouldUpdateZSet() throws Exception {
+		String key = "myKeyTestZUpdate1", member = "test";
+		Integer setResponseExpected = 1, setResponseExpectedAfterUpdate = 0, scoreAdd = 2, scoreUpdate = 5;
+		
+		Integer setResponse = this.service.zadd(key, scoreAdd, member);
+		assertEquals(setResponseExpected, setResponse);
+		
+		Integer setResponseUpdated = this.service.zadd(key, scoreUpdate, member);
+		assertEquals(setResponseExpectedAfterUpdate, setResponseUpdated);
+	}
+	
+	@Test
 	public void shouldUpdateScoreZSet() throws Exception {
 		String key = "myKeyTestZAdd2", member = "test";
 		Integer setResponseExpected = 0, scoreOne = 1, scoreTwo = 2;
@@ -249,6 +261,8 @@ public class CacheServiceTests {
 	
 	@Test
 	public void shouldReturnCorrectCacheSize() throws Exception {
+		this.service.clearCache();
+		
 		String key = "myKeyTestCacheSize1", member1 = "test1", member2 = "test2", member3 = "test3";
 		Integer score1 = 1, score2 = 2, score3 = 3;
 		

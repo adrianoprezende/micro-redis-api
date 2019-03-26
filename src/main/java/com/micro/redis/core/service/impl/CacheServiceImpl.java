@@ -87,4 +87,9 @@ public class CacheServiceImpl implements ICacheService {
 		return this.cache.getSortedSetRange(key, start, stop);
 	}
 
+	@Override
+	public void clearCache() {
+		this.cache.clearCache();
+	}
+
 }

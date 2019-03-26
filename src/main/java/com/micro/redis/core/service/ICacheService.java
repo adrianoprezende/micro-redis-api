@@ -22,5 +22,7 @@ public interface ICacheService {
 	Integer zrank(String key, String member);
 	
 	List<String> zrange(String key, Integer start, Integer stop);
+	
+	void clearCache();
 
 }

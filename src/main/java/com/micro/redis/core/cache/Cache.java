@@ -161,4 +161,8 @@ public class Cache {
 		return stop;
 	}
 	
+	public void clearCache() {
+		this.cacheData.clear();
+	}
+	
 }
