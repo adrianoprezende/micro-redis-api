@@ -48,7 +48,7 @@ public class CacheServiceImpl implements ICacheService {
 		int deletedKeysCount = 0;
 		
 		for(final String key : keys) {
-			String deletedValue = this.cache.removeSingleData(key);
+			Object deletedValue = this.cache.removeSingleData(key);
 			if(deletedValue != null) {
 				deletedKeysCount++;
 			}

@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.bankslips.main.SpringBootRestApiApp;
+import com.micro.redis.main.SpringBootRestApiApp;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBootRestApiApp.class)
@@ -245,6 +245,32 @@ public class CacheServiceTests {
 		
 		returnedMembers = this.service.zrange(key, 0, -1);
 		assertEquals(expectedMembers, returnedMembers);
+	}
+	
+	@Test
+	public void shouldReturnCorrectCacheSize() throws Exception {
+		String key = "myKeyTestCacheSize1", member1 = "test1", member2 = "test2", member3 = "test3";
+		Integer score1 = 1, score2 = 2, score3 = 3;
+		
+		this.service.zadd(key, score1, member1);
+		this.service.zadd(key, score2, member2);
+		this.service.zadd(key, score3, member3);
+		
+		String key2 = "myKeyTestCacheSize2", value = "test";
+		
+		this.service.set(key2, value, Optional.empty());
+		
+		Integer size = this.service.dbSize();
+		Integer expectedSize = 2;
+		
+		assertEquals(expectedSize, size);
+		
+		this.service.del(key);
+		
+		Integer sizeAfterDel = this.service.dbSize();
+		Integer expectedSizeAfterDel = 1;
+		
+		assertEquals(expectedSizeAfterDel, sizeAfterDel);
 	}
 	
 	

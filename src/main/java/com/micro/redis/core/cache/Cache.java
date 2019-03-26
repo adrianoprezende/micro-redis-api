@@ -20,29 +20,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class Cache {
 
-	private Map<String, ? super Object> singleData = new ConcurrentHashMap<>();
+	private Map<String, ? super Object> cacheData = new ConcurrentHashMap<>();
 
 	@SuppressWarnings("unchecked")
 	public <T> T getSingleData(final String key) {
-		return (T) singleData.get(key);
+		return (T) cacheData.get(key);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public <T> T addSingleData(final String key, final Object data) {
-		return (T) this.singleData.compute(key, (mkey, mVal) -> data);
+		return (T) this.cacheData.compute(key, (mkey, mVal) -> data);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public <T> T removeSingleData(final String key) {
-		return (T) this.singleData.remove(key);
+		return (T) this.cacheData.remove(key);
 	}
 	
 	public Integer getCacheSize() {
-		return singleData.size();
+		return cacheData.size();
 	}
 	
 	public Integer incrementSingleData(final String key) {
-		return (Integer) singleData.compute(key, (mkey, mVal) -> {
+		return (Integer) cacheData.compute(key, (mkey, mVal) -> {
 			if (mVal == null) {
 				return 1;
 			}
@@ -63,9 +63,9 @@ public class Cache {
 	
 	@SuppressWarnings("unchecked")
 	public Integer addSortedSetData(final String key, final String member, final Integer score) {
-		Object oldValue = this.singleData.get(key);
+		Object oldValue = this.cacheData.get(key);
 		
-		HashMap<String, Integer> newValue = (HashMap<String, Integer>) this.singleData.compute(key, (mkey, mVal) -> {
+		HashMap<String, Integer> newValue = (HashMap<String, Integer>) this.cacheData.compute(key, (mkey, mVal) -> {
 			
 			if (mVal == null) {
 				Map<String, Integer> newMap = new HashMap<>();
@@ -85,7 +85,7 @@ public class Cache {
 	
 	@SuppressWarnings("unchecked")
 	public Integer getSortedSetData(final String key, final String member) {
-		Object curData = this.singleData.get(key);
+		Object curData = this.cacheData.get(key);
 		
 		if (curData != null && curData instanceof HashMap) {
 			ObjectMapper mapper = new ObjectMapper();
@@ -98,7 +98,7 @@ public class Cache {
 	
 	@SuppressWarnings("unchecked")
 	public Integer getRankedSortedSetData(final String key, final String member) {
-		Object curData = this.singleData.get(key);
+		Object curData = this.cacheData.get(key);
 		
 		if (curData != null && curData instanceof HashMap) {
 			ObjectMapper mapper = new ObjectMapper();
@@ -128,7 +128,7 @@ public class Cache {
 	
 	@SuppressWarnings("unchecked")
 	public List<String> getSortedSetRange(final String key, final Integer start, final Integer stop) {
-		Object curData = this.singleData.get(key);
+		Object curData = this.cacheData.get(key);
 		
 		if (curData != null && curData instanceof HashMap) {
 			ObjectMapper mapper = new ObjectMapper();
